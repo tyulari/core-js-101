@@ -207,10 +207,13 @@ function findFirstSingleChar(str) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  let str = '';
+  str += (isStartIncluded) ? '[' : '(';
+  str += (a < b) ? `${a}, ${b}` : `${b}, ${a}`;
+  str += (isEndIncluded) ? ']' : ')';
+  return str;
 }
-
 
 /**
  * Reverse the specified string (put all chars in reverse order)
@@ -224,8 +227,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
 
 
@@ -241,8 +244,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return Number(num.toString().split('').reverse().join(''));
 }
 
 
@@ -266,8 +269,19 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const arrNum = ccn.toString().split('');
+  const flag = arrNum.length % 2;
+  let sum = 0;
+  for (let i = 0; i < arrNum.length; i += 1) {
+    if (i % 2 === flag) {
+      const condition = arrNum[i] * 2;
+      sum += (condition > 9) ? condition - 9 : condition;
+    } else {
+      sum += Number(arrNum[i]);
+    }
+  }
+  return (sum % 10) === 0;
 }
 
 /**
@@ -284,8 +298,10 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  const arrNumber = num.toString().split('');
+  const sum = arrNumber.reduce((total, donation) => Number(total) + Number(donation), 0);
+  return (sum > 9) ? getDigitalRoot(sum) : sum;
 }
 
 
@@ -310,8 +326,24 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const arr = str.split('');
+  const looser = [];
+  const desk = {
+    '{': '}',
+    '[': ']',
+    '<': '>',
+    '(': ')',
+  };
+  const closeBreakets = [')', ']', '}', '>'];
+  for (let i = 0; i < arr.length; i += 1) {
+    if (desk[arr[i]]) {
+      looser.push(arr[i]);
+    } else if (closeBreakets.includes(arr[i]) && arr[i] !== desk[looser.pop()]) {
+      return false;
+    }
+  }
+  return !looser.length;
 }
 
 
@@ -335,8 +367,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return Number(num.toString(n));
 }
 
 
